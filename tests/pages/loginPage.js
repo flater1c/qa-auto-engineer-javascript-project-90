@@ -3,7 +3,7 @@ export class LoginPage {
         this.page = page;
         this.usernameInput = page.getByRole('textbox', { name: /username/i });
         this.passwordInput = page.getByRole('textbox', { name: /password/i });
-        this.signinButton = page.getByRole('button', {name: /sign in/i});
+        this.signinButton = page.getByRole('button', { name: /sign in/i });
     }
 
     async goto() {
