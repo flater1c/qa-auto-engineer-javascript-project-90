@@ -1,9 +1,11 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 import { users } from './fixtures/users.js'
+import { statuses } from './fixtures/statuses.js'
 import { LoginPage} from './pages/loginPage.js';
 import { DashboardPage} from './pages/dashboardPage.js';
-import {UsersPage} from "./pages/usersPage.js";
+import { UsersPage } from "./pages/usersPage.js";
+import { StatusesPage } from './pages/statusesPage.js';
 
 test('Rendering successfully', async ({ page }) => {
     const loginPage = new LoginPage(page);
@@ -55,7 +57,7 @@ test('users list opens correctly', async ({ page }) => {
     await expect(page.getByRole('columnheader', { name: /Last Name/i })).toBeVisible();
 });
 
-test('user edit' , async ({ page }) => {
+test('user edit', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const dashboardPage = new DashboardPage(page);
     const usersPage = new UsersPage(page);
@@ -67,7 +69,7 @@ test('user edit' , async ({ page }) => {
     await expect(page.getByText(users.userToEdit.email)).toBeVisible();
 });
 
-test('user edit email validation' , async ({ page }) => {
+test('user edit email validation', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const dashboardPage = new DashboardPage(page);
     const usersPage = new UsersPage(page);
@@ -79,7 +81,7 @@ test('user edit email validation' , async ({ page }) => {
     await expect(page.getByText(users.userToEditInvalid.errorMessage)).toBeVisible();
 });
 
-test('delete user' , async ({ page }) => {
+test('delete user', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const dashboardPage = new DashboardPage(page);
     const usersPage = new UsersPage(page);
@@ -92,7 +94,7 @@ test('delete user' , async ({ page }) => {
     await expect(page.getByText(emailValue)).not.toBeVisible();
 });
 
-test('bulk delete users' , async ({ page }) => {
+test('bulk delete users', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const dashboardPage = new DashboardPage(page);
     const usersPage = new UsersPage(page);
@@ -100,6 +102,68 @@ test('bulk delete users' , async ({ page }) => {
     await loginPage.login(users.admin.username, users.admin.password);
     await dashboardPage.proceedToUsersPage();
     const selectedIds = await usersPage.bulkDeleteUser();
+    for (const id of selectedIds) {
+        await expect(page.getByText(id)).not.toBeVisible();
+    }
+});
+
+test('create new status', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const dashboardPage = new DashboardPage(page);
+    const statusesPage = new StatusesPage(page);
+    await loginPage.goto();
+    await loginPage.login(users.admin.username, users.admin.password);
+    await dashboardPage.proceedToTaskStatusesPage();
+    await statusesPage.proceedToStatusCreate();
+    await expect(statusesPage.nameInput).toBeVisible();
+    await statusesPage.fillStatusData(statuses.create.name, statuses.create.slug);
+    await dashboardPage.proceedToTaskStatusesPage();
+    await expect(page.getByText(statuses.create.name)).toBeVisible();
+});
+
+test('task statuses list opens correctly', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const dashboardPage = new DashboardPage(page);
+    await loginPage.goto();
+    await loginPage.login(users.admin.username, users.admin.password);
+    await dashboardPage.proceedToTaskStatusesPage();
+    await expect(page.getByRole('columnheader', { name: /Name/i })).toBeVisible();
+    await expect(page.getByRole('columnheader', { name: /Slug/i })).toBeVisible();
+});
+
+test('task status edit', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const dashboardPage = new DashboardPage(page);
+    const statusesPage = new StatusesPage(page);
+    await loginPage.goto();
+    await loginPage.login(users.admin.username, users.admin.password);
+    await dashboardPage.proceedToTaskStatusesPage();
+    await statusesPage.proceedToStatusEdit();
+    await statusesPage.fillStatusData(statuses.edit.name, statuses.edit.slug);
+    await expect(page.getByText(statuses.edit.name)).toBeVisible();
+});
+
+test('delete status', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const dashboardPage = new DashboardPage(page);
+    const statusesPage = new StatusesPage(page);
+    await loginPage.goto();
+    await loginPage.login(users.admin.username, users.admin.password);
+    await dashboardPage.proceedToTaskStatusesPage();
+    await statusesPage.proceedToStatusEdit();
+    const nameValue = await statusesPage.nameInput.inputValue()
+    await statusesPage.deleteStatus();
+    await expect(page.getByText(nameValue)).not.toBeVisible();
+});
+
+test('bulk delete statuses', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const dashboardPage = new DashboardPage(page);
+    const statusesPage = new StatusesPage(page);
+    await loginPage.goto();
+    await loginPage.login(users.admin.username, users.admin.password);
+    await dashboardPage.proceedToTaskStatusesPage();
+    const selectedIds = await statusesPage.bulkDeleteStatus();
     for (const id of selectedIds) {
         await expect(page.getByText(id)).not.toBeVisible();
     }
