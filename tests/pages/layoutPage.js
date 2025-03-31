@@ -5,6 +5,7 @@ export class LayoutPage {
         this.usersButton = page.getByRole('menuitem', { name: /Users/i });
         this.taskStatusesButton = page.getByRole('menuitem', { name: /Task Statuses/i });
         this.labelsButton = page.getByRole('menuitem', { name: /Labels/i });
+        this.tasksButton = page.getByRole('menuitem', { name: /Tasks/i });
         this.logoutButton = page.getByRole('menuitem', { name: /Logout/i });
     }
 
@@ -23,5 +24,9 @@ export class LayoutPage {
 
     async proceedToLabelsPage() {
         await this.labelsButton.click();
+    }
+
+    async proceedToTasksPage() {
+        await this.tasksButton.click();
     }
 }
