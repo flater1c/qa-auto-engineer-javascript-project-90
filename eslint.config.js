@@ -1,33 +1,57 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+import globals from 'globals';
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { FlatCompat } from '@eslint/eslintrc';
+import pluginJs from '@eslint/js';
+import importPlugin from 'eslint-plugin-import';
+
+// mimic CommonJS variables -- not needed if using CommonJS
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: pluginJs.configs.recommended,
+});
 
 export default [
-  { ignores: ['dist'] },
   {
-    files: ['**/*.{js,jsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.node,
+        ...globals.jest,
+      },
       parserOptions: {
+        // Eslint doesn't supply ecmaVersion in `parser.js` `context.parserOptions`
+        // This is required to avoid ecmaVersion < 2015 error or 'import' / 'export' error
         ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
         sourceType: 'module',
       },
     },
-    plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-    },
+    plugins: { import: importPlugin },
     rules: {
-      ...js.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
+      ...importPlugin.configs.recommended.rules,
     },
   },
-]
+  ...compat.extends('airbnb-base'),
+  {
+    rules: {
+      'no-underscore-dangle': [
+        'error',
+        {
+          allow: ['__filename', '__dirname'],
+        },
+      ],
+      'import/extensions': [
+        'error',
+        {
+          js: 'always',
+        },
+      ],
+      'import/no-named-as-default': 'off',
+      'import/no-named-as-default-member': 'off',
+      'no-console': 'off',
+      'import/no-extraneous-dependencies': 'off',
+    },
+  },
+];
