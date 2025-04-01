@@ -1,0 +1,52 @@
+{
+  "users": {
+    "admin": {
+      "username": "Admin20",
+      "password": "admin123"
+    },
+    "user": {
+      "username": "user_110000",
+      "password": "user123"
+    },
+    "userToCreate": {
+      "email": "user_110000@gmail.com",
+      "firstName": "Tommy",
+      "lastName": "Vercetti"
+    },
+    "userToEdit": {
+      "email": "useredit_110000@gmail.com",
+      "firstName": "Lance",
+      "lastName": "Vance"
+    },
+    "userToEditInvalid": {
+      "email": "useredit_110000gmail.com",
+      "firstName": "Lance",
+      "lastName": "Vance",
+      "errorMessage": "Incorrect email format"
+    }
+  },
+  "tasks": {
+    "create": {
+      "assignee": "jack@yahoo.com",
+      "title": "emergency",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "label": "bug"
+    },
+    "edit": {
+      "assignee": "jack@yahoo.com",
+      "title": "Researchers matching worker variations decimal.",
+      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "label": "bug"
+    }
+  },
+  "statuses": {
+    "create": {
+      "name": "In Progress",
+      "slug": "in_progress"
+    },
+    "edit": {
+      "name": "Merged To Dev",
+      "slug": "merged_to_dev"
+    }
+  }
+}

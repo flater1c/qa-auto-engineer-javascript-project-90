@@ -1,5 +1,6 @@
 export class StatusesPage {
   constructor(page) {
+    this.page = page;
     this.createStatusButton = page.getByRole('link', { name: /Create/i });
     this.nameInput = page.getByRole('textbox', { name: /Name/i });
     this.slugInput = page.getByRole('textbox', { name: /Slug/i });
@@ -7,6 +8,10 @@ export class StatusesPage {
     this.deleteButton = page.getByRole('button', { name: /Delete/i });
     this.statusLink = page.getByRole('cell').nth(1);
     this.statusTableRow = page.getByRole('row');
+  }
+
+  async goto() {
+    await this.page.goto('/#/task_statuses');
   }
 
   async proceedToStatusCreate() {

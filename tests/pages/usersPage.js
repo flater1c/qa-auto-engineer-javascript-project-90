@@ -1,5 +1,6 @@
 export class UsersPage {
   constructor(page) {
+    this.page = page;
     this.userLink = page.getByText(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);
     this.createUserButton = page.getByRole('link', { name: /Create/i });
     this.emailInput = page.getByRole('textbox', { name: /Email/i });
@@ -8,6 +9,10 @@ export class UsersPage {
     this.saveButton = page.getByRole('button', { name: /Save/i });
     this.deleteButton = page.getByRole('button', { name: /Delete/i });
     this.usersTableRow = page.getByRole('row');
+  }
+
+  async goto() {
+    await this.page.goto('/#/users');
   }
 
   async proceedToUserCreate() {

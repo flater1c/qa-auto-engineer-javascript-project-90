@@ -1,11 +1,16 @@
 export class LabelsPage {
   constructor(page) {
+    this.page = page;
     this.createLabelButton = page.getByRole('link', { name: /Create/i });
     this.nameInput = page.getByRole('textbox', { name: /Name/i });
     this.saveButton = page.getByRole('button', { name: /Save/i });
     this.deleteButton = page.getByRole('button', { name: /Delete/i });
     this.labelLink = page.getByRole('cell').nth(1);
     this.labelTableRow = page.getByRole('row');
+  }
+
+  async goto() {
+    await this.page.goto('/#/labels');
   }
 
   async proceedToLabelCreate() {
