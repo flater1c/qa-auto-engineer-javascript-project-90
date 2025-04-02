@@ -1,51 +1,34 @@
 import { expect } from '@playwright/test';
 import { test } from './utils/fixtures.js';
-import { LoginPage } from './pages/loginPage.js';
-import { LayoutPage } from './pages/layoutPage.js';
-import { LabelsPage } from './pages/labelsPage.js';
 
-let loginPage;
-let layoutPage;
-let labelsPage;
-
-test.beforeEach(async ({ page, testData }) => {
-  loginPage = new LoginPage(page);
-  layoutPage = new LayoutPage(page);
-  labelsPage = new LabelsPage(page);
-  await loginPage.goto();
-  await loginPage.login(testData.users.admin.username, testData.users.admin.password);
-  await layoutPage.proceedToLabelsPage();
-});
-
-test('create new label', async ({ page }) => {
+test('create new label', async ({ labelsPage }) => {
   await labelsPage.proceedToLabelCreate();
   await expect(labelsPage.nameInput).toBeVisible();
   await labelsPage.fillLabelData('NewLabel');
-  await layoutPage.proceedToLabelsPage();
-  await expect(page.getByText('NewLabel')).toBeVisible();
+  await expect(labelsPage.page.getByText('NewLabel')).toBeVisible();
 });
 
-test('labels list opens correctly', async ({ page }) => {
-  await expect(page.getByRole('columnheader', { name: /Name/i })).toBeVisible();
-  await expect(page.getByRole('columnheader', { name: /Created at/i })).toBeVisible();
+test('labels list opens correctly', async ({ labelsPage }) => {
+  await expect(labelsPage.page.getByRole('columnheader', { name: /Name/i })).toBeVisible();
+  await expect(labelsPage.page.getByRole('columnheader', { name: /Created at/i })).toBeVisible();
 });
 
-test('label edit', async ({ page }) => {
+test('label edit', async ({ labelsPage }) => {
   await labelsPage.proceedToLabelEdit();
   await labelsPage.fillLabelData('EditedLabel');
-  await expect(page.getByText('EditedLabel')).toBeVisible();
+  await expect(labelsPage.page.getByText('EditedLabel')).toBeVisible();
 });
 
-test('delete label', async ({ page }) => {
+test('delete label', async ({ labelsPage }) => {
   await labelsPage.proceedToLabelEdit();
   const nameValue = await labelsPage.nameInput.inputValue();
   await labelsPage.deleteLabel();
-  await expect(page.getByText(nameValue)).not.toBeVisible();
+  await expect(labelsPage.page.getByText(nameValue)).not.toBeVisible();
 });
 
-test('bulk delete labels', async ({ page }) => {
+test('bulk delete labels', async ({ labelsPage }) => {
   const selectedIds = await labelsPage.bulkDeleteLabel();
   for (const id of selectedIds) {
-    await expect(page.getByText(id)).not.toBeVisible();
+    await expect(labelsPage.page.getByText(id)).not.toBeVisible();
   }
 });
