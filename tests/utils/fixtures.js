@@ -4,8 +4,8 @@ import { LoginPage } from '../pages/loginPage.js';
 import { LayoutPage } from '../pages/layoutPage.js';
 import { LabelsPage } from '../pages/labelsPage.js';
 import { TasksPage } from '../pages/tasksPage.js';
-import {StatusesPage} from "../pages/statusesPage.js";
-import {UsersPage} from "../pages/usersPage.js";
+import { StatusesPage } from '../pages/statusesPage.js';
+import { UsersPage } from '../pages/usersPage.js';
 
 export const test = base.extend({
     testData: async ({}, use) => {
