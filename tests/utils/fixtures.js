@@ -29,7 +29,7 @@ export const test = base.extend({
     await use(loginPage);
   },
 
-  layoutPage: async ({ page, loginAndSetup }, use) => {
+  layoutPage: async ({ loginAndSetup }, use) => {
     const { layoutPage } = loginAndSetup;
     await use(layoutPage);
   },
