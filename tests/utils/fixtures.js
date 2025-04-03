@@ -10,6 +10,7 @@ import { UsersPage } from '../pages/UsersPage.js';
 const testData = JSON.parse(fs.readFileSync(new URL('./testData.json', import.meta.url), 'utf-8'));
 
 export const test = base.extend({
+  // eslint-disable-next-line no-empty-pattern
   testData: async ({}, use) => {
     await use(testData);
   },
@@ -17,10 +18,8 @@ export const test = base.extend({
   loginAndSetup: async ({ page, testData }, use) => {
     const loginPage = new LoginPage(page);
     const layoutPage = new BasePage(page);
-
     await loginPage.goto();
     await loginPage.login(testData.users.admin.username, testData.users.admin.password);
-
     await use({ page, layoutPage });
   },
 
@@ -30,7 +29,7 @@ export const test = base.extend({
     await use(loginPage);
   },
 
-  layoutPage: async ({ loginAndSetup }, use) => {
+  layoutPage: async ({ page, loginAndSetup }, use) => {
     const { layoutPage } = loginAndSetup;
     await use(layoutPage);
   },
