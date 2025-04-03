@@ -1,6 +1,6 @@
-import { LayoutPage } from './LayoutPage.js';
+import { BasePage } from './BasePage.js';
 
-export class UsersPage extends LayoutPage {
+export class UsersPage extends BasePage {
   constructor(page) {
     super(page);
     this.userLink = page.getByText(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/);

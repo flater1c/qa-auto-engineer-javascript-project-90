@@ -1,6 +1,6 @@
-import { LayoutPage } from './LayoutPage.js';
+import { BasePage } from './BasePage.js';
 
-export class StatusesPage extends LayoutPage {
+export class StatusesPage extends BasePage {
   constructor(page) {
     super(page);
     this.createStatusButton = page.getByRole('link', { name: /Create/i });

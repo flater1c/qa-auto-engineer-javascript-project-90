@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-export class LayoutPage {
+export class BasePage {
   constructor(page) {
     this.page = page;
     this.profileButton = page.getByRole('button', { name: /Profile/i });

@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
-import { LayoutPage } from './LayoutPage.js';
+import { BasePage } from './BasePage.js';
 
-export class TasksPage extends LayoutPage {
+export class TasksPage extends BasePage {
   constructor(page, testData) {
     super(page);
     this.createTaskButton = page.getByRole('link', { name: /Create/i });

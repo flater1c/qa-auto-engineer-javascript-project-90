@@ -1,6 +1,6 @@
-import { LayoutPage } from './LayoutPage.js';
+import { BasePage } from './BasePage.js';
 
-export class LabelsPage extends LayoutPage {
+export class LabelsPage extends BasePage {
   constructor(page) {
     super(page);
     this.createLabelButton = page.getByRole('link', { name: /Create/i });

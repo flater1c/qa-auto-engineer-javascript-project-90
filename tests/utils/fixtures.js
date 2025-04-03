@@ -1,7 +1,7 @@
 import { test as base } from '@playwright/test';
 import testData from './testData.json' assert { type: 'json' };
 import { LoginPage } from '../pages/LoginPage.js';
-import { LayoutPage } from '../pages/LayoutPage.js';
+import { BasePage } from '../pages/BasePage.js';
 import { LabelsPage } from '../pages/LabelsPage.js';
 import { TasksPage } from '../pages/TasksPage.js';
 import { StatusesPage } from '../pages/StatusesPage.js';
@@ -14,7 +14,7 @@ export const test = base.extend({
 
     loginAndSetup: async ({ page, testData }, use) => {
         const loginPage = new LoginPage(page);
-        const layoutPage = new LayoutPage(page);
+        const layoutPage = new BasePage(page);
 
         await loginPage.goto();
         await loginPage.login(testData.users.admin.username, testData.users.admin.password);
