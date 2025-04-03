@@ -1,5 +1,5 @@
+import fs from 'fs';
 import { test as base } from '@playwright/test';
-import testData from './testData.json' assert { type: 'json' };
 import { LoginPage } from '../pages/LoginPage.js';
 import { BasePage } from '../pages/BasePage.js';
 import { LabelsPage } from '../pages/LabelsPage.js';
@@ -7,57 +7,59 @@ import { TasksPage } from '../pages/TasksPage.js';
 import { StatusesPage } from '../pages/StatusesPage.js';
 import { UsersPage } from '../pages/UsersPage.js';
 
+const testData = JSON.parse(fs.readFileSync(new URL('./testData.json', import.meta.url), 'utf-8'));
+
 export const test = base.extend({
-    testData: async ({}, use) => {
-        await use(testData);
-    },
+  testData: async ({}, use) => {
+    await use(testData);
+  },
 
-    loginAndSetup: async ({ page, testData }, use) => {
-        const loginPage = new LoginPage(page);
-        const layoutPage = new BasePage(page);
+  loginAndSetup: async ({ page, testData }, use) => {
+    const loginPage = new LoginPage(page);
+    const layoutPage = new BasePage(page);
 
-        await loginPage.goto();
-        await loginPage.login(testData.users.admin.username, testData.users.admin.password);
+    await loginPage.goto();
+    await loginPage.login(testData.users.admin.username, testData.users.admin.password);
 
-        await use({ page, layoutPage });
-    },
+    await use({ page, layoutPage });
+  },
 
-    loginPage: async ({ page }, use) => {
-        const loginPage = new LoginPage(page);
-        await loginPage.goto();
-        await use(loginPage);
-    },
+  loginPage: async ({ page }, use) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await use(loginPage);
+  },
 
-    layoutPage: async ({ page, loginAndSetup }, use) => {
-        const { layoutPage } = loginAndSetup;
-        await use(layoutPage);
-    },
+  layoutPage: async ({ loginAndSetup }, use) => {
+    const { layoutPage } = loginAndSetup;
+    await use(layoutPage);
+  },
 
-    labelsPage: async ({ page, loginAndSetup }, use) => {
-        const { layoutPage } = loginAndSetup;
-        const labelsPage = new LabelsPage(page);
-        await layoutPage.proceedToLabelsPage();
-        await use(labelsPage);
-    },
+  labelsPage: async ({ page, loginAndSetup }, use) => {
+    const { layoutPage } = loginAndSetup;
+    const labelsPage = new LabelsPage(page);
+    await layoutPage.proceedToLabelsPage();
+    await use(labelsPage);
+  },
 
-    tasksPage: async ({ page, testData, loginAndSetup }, use) => {
-        const { layoutPage } = loginAndSetup;
-        const tasksPage = new TasksPage(page, testData,);
-        await layoutPage.proceedToTasksPage();
-        await use(tasksPage);
-    },
+  tasksPage: async ({ page, testData, loginAndSetup }, use) => {
+    const { layoutPage } = loginAndSetup;
+    const tasksPage = new TasksPage(page, testData);
+    await layoutPage.proceedToTasksPage();
+    await use(tasksPage);
+  },
 
-    statusesPage: async ({ page, testData, loginAndSetup }, use) => {
-        const { layoutPage } = loginAndSetup;
-        const statusesPage = new StatusesPage(page, testData);
-        await layoutPage.proceedToTaskStatusesPage();
-        await use(statusesPage);
-    },
+  statusesPage: async ({ page, testData, loginAndSetup }, use) => {
+    const { layoutPage } = loginAndSetup;
+    const statusesPage = new StatusesPage(page, testData);
+    await layoutPage.proceedToTaskStatusesPage();
+    await use(statusesPage);
+  },
 
-    usersPage: async ({ page, testData, loginAndSetup }, use) => {
-        const { layoutPage } = loginAndSetup;
-        const usersPage = new UsersPage(page, testData);
-        await layoutPage.proceedToUsersPage();
-        await use(usersPage);
-    }
+  usersPage: async ({ page, testData, loginAndSetup }, use) => {
+    const { layoutPage } = loginAndSetup;
+    const usersPage = new UsersPage(page, testData);
+    await layoutPage.proceedToUsersPage();
+    await use(usersPage);
+  },
 });
