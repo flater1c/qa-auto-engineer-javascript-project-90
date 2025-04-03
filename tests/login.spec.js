@@ -10,7 +10,7 @@ test('login', async ({ loginPage, testData }) => {
   await expect(loginPage.page.getByText(/Welcome to the administration/i)).toBeVisible();
 });
 
-test('logout', async ({ loginPage, layoutPage }) => {
-  await layoutPage.logout();
+test('logout', async ({ loginPage, basePage }) => {
+  await basePage.logout();
   await expect(loginPage.signinButton).toBeVisible();
 });
