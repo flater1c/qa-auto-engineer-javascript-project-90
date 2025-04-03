@@ -5,15 +5,11 @@ test('create new task', async ({ tasksPage, testData }) => {
   await tasksPage.proceedToTaskCreate();
   await expect(tasksPage.assigneeDropdown).toBeVisible();
   await tasksPage.fillTaskData(testData.tasks.create.title, testData.tasks.create.content);
-  await expect(tasksPage.page.getByText(testData.tasks.create.title)).toBeVisible();
+  await tasksPage.verifyEntityExists(testData.tasks.create.title);
 });
 
 test('task board opens correctly', async ({ tasksPage }) => {
-  await expect(tasksPage.page.getByRole('heading', { name: /Draft/i })).toBeVisible();
-  await expect(tasksPage.page.getByRole('heading', { name: /To Review/i })).toBeVisible();
-  await expect(tasksPage.page.getByRole('heading', { name: /To Be Fixed/i })).toBeVisible();
-  await expect(tasksPage.page.getByRole('heading', { name: /To Publish/i })).toBeVisible();
-  await expect(tasksPage.page.getByRole('heading', { name: /Published/i })).toBeVisible();
+  await tasksPage.verifyTaskHeaders(['Draft', 'To Review', 'To Be Fixed', 'To Publish', 'Published']);
 });
 
 test('task edit and moving to another column', async ({ tasksPage, testData }) => {
@@ -25,9 +21,7 @@ test('task edit and moving to another column', async ({ tasksPage, testData }) =
 
 test('delete task', async ({ tasksPage }) => {
   await tasksPage.proceedToTaskEdit();
-  const nameValue = await tasksPage.titleInput.inputValue();
   await tasksPage.deleteTask();
-  await expect(tasksPage.page.getByText(nameValue)).not.toBeVisible();
 });
 
 test('filtering tasks by assignee', async ({ tasksPage, testData }) => {
@@ -43,7 +37,7 @@ test('filtering tasks by status', async ({ tasksPage }) => {
   for (const column of columns) {
     const taskCount = await column.locator('.css-1lt5qva-MuiCardContent-root').count();
     if (taskCount > 0) {
-      nonEmptyColumns++;
+      nonEmptyColumns += 1;
     }
   }
   await expect(nonEmptyColumns).toBe(1);

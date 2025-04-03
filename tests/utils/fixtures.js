@@ -1,11 +1,11 @@
 import { test as base } from '@playwright/test';
 import testData from './testData.json' assert { type: 'json' };
-import { LoginPage } from '../pages/loginPage.js';
-import { LayoutPage } from '../pages/layoutPage.js';
-import { LabelsPage } from '../pages/labelsPage.js';
-import { TasksPage } from '../pages/tasksPage.js';
-import { StatusesPage } from '../pages/statusesPage.js';
-import { UsersPage } from '../pages/usersPage.js';
+import { LoginPage } from '../pages/LoginPage.js';
+import { LayoutPage } from '../pages/LayoutPage.js';
+import { LabelsPage } from '../pages/LabelsPage.js';
+import { TasksPage } from '../pages/TasksPage.js';
+import { StatusesPage } from '../pages/StatusesPage.js';
+import { UsersPage } from '../pages/UsersPage.js';
 
 export const test = base.extend({
     testData: async ({}, use) => {

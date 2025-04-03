@@ -1,6 +1,9 @@
-export class TasksPage {
+import { expect } from '@playwright/test';
+import { LayoutPage } from './LayoutPage.js';
+
+export class TasksPage extends LayoutPage {
   constructor(page, testData) {
-    this.page = page;
+    super(page);
     this.createTaskButton = page.getByRole('link', { name: /Create/i });
     this.assigneeDropdown = page.getByRole('combobox', { name: /Assignee/i });
     this.assigneeValue = page.getByRole('option', { name: testData.tasks.create.assignee });
@@ -23,6 +26,12 @@ export class TasksPage {
     await this.page.goto('/#/tasks');
   }
 
+  async verifyTaskHeaders(headers) {
+    for (const header of headers) {
+      await expect(this.page.getByRole('heading', { name: header })).toBeVisible();
+    }
+  }
+
   async proceedToTaskCreate() {
     await this.createTaskButton.click();
   }
@@ -36,7 +45,7 @@ export class TasksPage {
   }
 
   async deleteTask() {
-    await this.deleteButton.click();
+    await this.deleteEntity(() => this.titleInput.inputValue());
   }
 
   async fillTaskData(title, content) {
